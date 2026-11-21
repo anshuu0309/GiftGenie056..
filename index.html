@@ -1,0 +1,284 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Gift Genie</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #fff0f6;
+    color: #65445b;
+    text-align: center;
+}
+
+header {
+    background: white;
+    padding: 20px;
+    color: #c45b91;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.page {
+    display: none;
+    padding: 35px 15px;
+}
+
+.active {
+    display: block;
+}
+
+.box {
+    background: white;
+    max-width: 550px;
+    margin: 25px auto;
+    padding: 30px;
+    border-radius: 22px;
+    box-shadow: 0 4px 15px #e5c5d5;
+}
+
+h1 {
+    color: #c45b91;
+}
+
+button {
+    background: #d978a8;
+    color: white;
+    border: none;
+    padding: 13px 25px;
+    border-radius: 22px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px;
+}
+
+button:hover {
+    background: #b94f85;
+}
+
+select {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0 18px;
+    border: 1px solid #e5b5cf;
+    border-radius: 10px;
+}
+
+label {
+    display: block;
+    text-align: left;
+}
+
+.card {
+    background: white;
+    max-width: 350px;
+    margin: 18px auto;
+    padding: 22px;
+    border-radius: 18px;
+}
+
+footer {
+    padding: 20px;
+    color: #a16b8c;
+}
+</style>
+</head>
+
+<body>
+
+<header>🎁 Gift Genie</header>
+
+<!-- HOME PAGE -->
+
+<section id="home" class="page active">
+
+<div class="box">
+
+<h1>Welcome to Gift Genie! 💗</h1>
+
+<h2>Find the Perfect Gift</h2>
+
+<p>
+Make every occasion special with
+a thoughtful gift for your loved ones.
+</p>
+
+<p>🎀 🎁 💝 🎀</p>
+
+<button onclick="showPage('finder')">
+Find My Gift ✨
+</button>
+
+</div>
+
+</section>
+
+
+<!-- FINDER PAGE -->
+
+<section id="finder" class="page">
+
+<div class="box">
+
+<h1>Find Your Perfect Gift 💝</h1>
+
+<form id="giftForm">
+
+<label>Choose Occasion</label>
+<select id="occasion">
+<option>Birthday</option>
+<option>Anniversary</option>
+<option>Valentines Day</option>
+<option>Graduation</option>
+</select>
+
+<label>Gift For Whom?</label>
+<select id="person">
+<option>Friend</option>
+<option>Mother</option>
+<option>Father</option>
+<option>Brother</option>
+<option>Partner</option>
+<option>Child</option>
+<option>Student</option>
+</select>
+
+<label>Age Group</label>
+<select id="age">
+<option>Child</option>
+<option>Teen</option>
+<option>Adult</option>
+<option>All</option>
+</select>
+
+<label>Interest</label>
+<select id="interest">
+<option>Fashion</option>
+<option>Technology</option>
+<option>Reading</option>
+<option>Sports</option>
+<option>Music</option>
+<option>Gaming</option>
+<option>Nature</option>
+<option>Food</option>
+<option>Beauty</option>
+<option>Memories</option>
+<option>Study</option>
+<option>Cute</option>
+</select>
+
+<label>Your Budget</label>
+<select id="budget">
+<option value="500">Below ₹500</option>
+<option value="1000">₹500 - ₹1000</option>
+<option value="2000">₹1000 - ₹2000</option>
+<option value="5000">Above ₹2000</option>
+</select>
+
+<button type="submit">Find My Match 💗</button>
+
+</form>
+
+</div>
+
+</section>
+
+
+<!-- RESULT PAGE -->
+
+<section id="result" class="page">
+
+<h1>Your Gift Matches! 🎁</h1>
+
+<p>We found these gifts for you.</p>
+
+<div id="giftResults"></div>
+
+<button onclick="showPage('finder')">
+Find More Gifts
+</button>
+
+</section>
+
+
+<footer>
+Created with ❤️ by Anshu (056) & Rashi (124)
+</footer>
+
+
+<script>
+
+const gifts = [
+["Teddy Bear",400,"Cute"],
+["Smart Watch",1500,"Technology"],
+["Story Books",350,"Reading"],
+["Perfume",1200,"Fashion"],
+["Headphones",900,"Technology"],
+["Handbag",1800,"Fashion"],
+["Chocolate Box",300,"Food"],
+["Smart Lamp",1000,"Technology"],
+["Football",700,"Sports"],
+["Photo Frame",450,"Memories"],
+["Jewellery",2000,"Fashion"],
+["Indoor Plant",350,"Nature"],
+["Notebook",250,"Study"],
+["Gaming Mouse",900,"Gaming"],
+["Coffee Mug",300,"Food"],
+["Skincare Kit",1100,"Beauty"],
+["Bluetooth Speaker",1600,"Music"],
+["Customized Cushion",750,"Memories"]
+];
+
+function showPage(page) {
+    document.querySelectorAll(".page").forEach(
+        p => p.classList.remove("active")
+    );
+
+    document.getElementById(page).classList.add("active");
+}
+
+document.getElementById("giftForm").onsubmit = function(e) {
+
+    e.preventDefault();
+
+    let interest = document.getElementById("interest").value;
+    let budget = Number(document.getElementById("budget").value);
+
+    let matches = gifts.filter(
+        gift => gift[1] <= budget && gift[2] === interest
+    );
+
+    if (matches.length === 0) {
+        matches = gifts.filter(gift => gift[1] <= budget);
+    }
+
+    let output = "";
+
+    matches.slice(0,5).forEach(gift => {
+
+        let link = "https://www.amazon.in/s?k=" +
+                   encodeURIComponent(gift[0]);
+
+        output += `
+        <div class="card">
+            <h2>🎀 ${gift[0]}</h2>
+            <p>Price: ₹${gift[1]}</p>
+            <p>Interest: ${gift[2]}</p>
+            <a href="${link}" target="_blank">
+                <button>Buy on Amazon</button>
+            </a>
+        </div>
+        `;
+    });
+
+    document.getElementById("giftResults").innerHTML = output;
+
+    showPage("result");
+};
+
+</script>
+
+</body>
+</html>
